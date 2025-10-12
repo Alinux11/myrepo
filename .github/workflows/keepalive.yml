@@ -2,12 +2,14 @@ name: Keep Codespace Alive
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # jalan tiap 10 menit
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 jobs:
   keepalive:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -16,14 +18,7 @@ jobs:
           sudo apt update -y
           sudo apt install -y gh
 
-      - name: Login ke GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: echo "$GH_TOKEN" | gh auth login --with-token
-
       - name: Keep Codespace alive
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           echo "Ping Codespace..."
           gh codespace list
