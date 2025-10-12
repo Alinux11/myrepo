@@ -1,0 +1,30 @@
+name: Keep Codespace Alive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # jalan tiap 10 menit
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update -y
+          sudo apt install -y gh
+
+      - name: Login ke GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: echo "$GH_TOKEN" | gh auth login --with-token
+
+      - name: Keep Codespace alive
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          echo "Ping Codespace..."
+          gh codespace list
+          gh codespace ssh -c upgraded-space-halibut-6946x5vg77j6c5v5g
