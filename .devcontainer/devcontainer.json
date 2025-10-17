@@ -1,9 +1,0 @@
-{
-  "forwardPorts": [5678],
-  "portsAttributes": {
-    "5678": {
-      "label": "n8n",
-      "visibility": "public"
-    }
-  }
-}
